@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <!-- Ensures proper scaling on mobile -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Birthday Prachi!</title>
+  <style>
+    /* Basic page styling */
+    body {
+      text-align: center;
+      background: linear-gradient(to right, #ff9a9e, #fad0c4);
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    /* Container for the initial birthday message */
+    #birthday-container {
+      margin-top: 10vh;
+    }
+    button {
+      background: #ff4081;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      font-size: 18px;
+      cursor: pointer;
+      border-radius: 10px;
+      margin: 5px;
+    }
+    /* Celebration area */
+    #celebration {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-top: 3vh;
+    }
+    /* Cake container: centered and pushed lower down */
+    #cake-container {
+      width: 100%;
+      text-align: center;
+      position: relative;
+      margin: 20vh auto 0; /* Lower the cake further */
+    }
+    /* Cake styling */
+    .cake {
+      display: inline-block;
+      width: 180px;  /* Good size for phone screens */
+      height: 100px;
+      background: #ffcc99;
+      border-radius: 10px;
+      position: relative;
+      margin: 15px auto 20px;
+    }
+    .cake::before {
+      content: '';
+      width: 100%;
+      height: 25px;
+      background: #ff9966;
+      position: absolute;
+      top: -25px;
+      left: 0;
+      border-radius: 10px 10px 0 0;
+    }
+    /* Multiple candles */
+    .candle {
+      width: 8px;
+      height: 25px;
+      background: red;
+      position: absolute;
+      top: -30px;
+    }
+    #candle1 { left: 30%; }
+    #candle2 { left: 50%; transform: translateX(-50%); }
+    #candle3 { left: 70%; }
+    /* Flames for each candle */
+    .flame {
+      width: 8px;
+      height: 12px;
+      background: orange;
+      border-radius: 50%;
+      position: absolute;
+      top: -12px;
+      left: 0;
+      display: none; /* hidden by default */
+    }
+    /* Knife for cutting animation */
+    #knife {
+      position: absolute;
+      width: 40px;
+      height: 8px;
+      background: gray;
+      border-radius: 2px;
+      top: 50%;                /* Vertical center of the cake */
+      left: -50px;             /* Start off-cake to the left */
+      transform: translateY(-50%);
+      z-index: 10;             /* Appear above the cake */
+      display: none;
+    }
+    @keyframes slice {
+      0% { left: -50px; }
+      100% { left: 190px; }
+    }
+    /* Rabbit container: bigger rabbit, positioned at bottom-right */
+    #rabbit-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 14px;
+      color: #333;
+    }
+    .rabbit {
+      width: 80px;
+      height: 80px;
+      background: #ffffff;
+      border: 2px solid black;
+      border-radius: 50%;
+      position: relative;
+    }
+    .rabbit::before {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 40px;
+      background: #ffffff;
+      border: 2px solid black;
+      border-radius: 50% 50% 0 0;
+      top: -35px;
+      left: 8px;
+    }
+    .rabbit::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 40px;
+      background: #ffffff;
+      border: 2px solid black;
+      border-radius: 50% 50% 0 0;
+      top: -35px;
+      right: 8px;
+    }
+    .eye {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: black;
+      border-radius: 50%;
+      top: 25px;
+    }
+    .eye.left { left: 20px; }
+    .eye.right { right: 20px; }
+    .nose {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: pink;
+      border-radius: 50%;
+      top: 38px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .hidden { display: none; }
+    @media (max-width: 480px) {
+      #cake-container { margin-top: 15vh; }
+      .cake { width: 150px; height: 80px; }
+      .cake::before { height: 20px; top: -20px; }
+      .candle { width: 6px; height: 20px; top: -25px; }
+      .flame { width: 6px; height: 10px; top: -10px; }
+      #knife { width: 30px; }
+      @keyframes slice {
+        0% { left: -40px; }
+        100% { left: 160px; }
+      }
+      .rabbit { width: 60px; height: 60px; }
+      .rabbit::before, .rabbit::after { width: 15px; height: 30px; top: -25px; }
+      .eye { width: 4px; height: 4px; top: 18px; }
+      .eye.left { left: 14px; }
+      .eye.right { right: 14px; }
+      .nose { width: 5px; height: 5px; top: 28px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Hidden audio element; this streams the file and it isn't permanently saved -->
+  <audio id="bg-music" preload="auto" style="display: none;">
+    <source src="Dil Hai Chota Sa Original-(PagalWorld).mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <div id="birthday-container">
+    <h1>Happy Birthday, Prachi! 🎉🎂</h1>
+    <p>Wishing you a day filled with love, joy, and happiness!</p>
+    <button onclick="startCelebration()">Start Celebration & Play Music</button>
+  </div>
+
+  <div id="celebration" class="hidden">
+    <div id="cake-container">
+      <!-- Cake -->
+      <div class="cake" id="cake">
+        <!-- Knife for cutting animation -->
+        <div id="knife"></div>
+        <!-- Candles -->
+        <div class="candle" id="candle1">
+          <div class="flame" id="flame1"></div>
+        </div>
+        <div class="candle" id="candle2">
+          <div class="flame" id="flame2"></div>
+        </div>
+        <div class="candle" id="candle3">
+          <div class="flame" id="flame3"></div>
+        </div>
+      </div>
+      <!-- Cake Buttons -->
+      <button onclick="lightCandles()">Ignite Candles</button>
+      <button onclick="blowCandles()">Blow Candles</button>
+      <button onclick="cutCake()">Cut Cake</button>
+    </div>
+
+    <!-- Rabbit -->
+    <div id="rabbit-container">
+      <div class="rabbit">
+        <div class="eye left"></div>
+        <div class="eye right"></div>
+        <div class="nose"></div>
+      </div>
+      <p>Hi, I'm Dora! Let's celebrate together! 🐰</p>
+    </div>
+  </div>
+
+  <script>
+    // Start the celebration and play the audio from 36s to 90s in a loop.
+    function startCelebration() {
+      document.getElementById('birthday-container').style.display = 'none';
+      document.getElementById('celebration').classList.remove('hidden');
+      
+      var audio = document.getElementById('bg-music');
+      audio.currentTime = 36;
+      audio.volume = 1;  // Ensure the volume is set to full.
+      audio.play().then(function() {
+        console.log("Audio is playing.");
+      }).catch(function(error) {
+        console.error("Error playing audio: ", error);
+      });
+      
+      // Loop the audio segment between 36 and 90 seconds.
+      audio.addEventListener('timeupdate', function() {
+        if (audio.currentTime >= 90) {
+          audio.currentTime = 36;
+        }
+      });
+    }
+    // Show flames on all candles.
+    function lightCandles() {
+      document.getElementById('flame1').style.display = 'block';
+      document.getElementById('flame2').style.display = 'block';
+      document.getElementById('flame3').style.display = 'block';
+    }
+    // Hide flames on all candles.
+    function blowCandles() {
+      document.getElementById('flame1').style.display = 'none';
+      document.getElementById('flame2').style.display = 'none';
+      document.getElementById('flame3').style.display = 'none';
+    }
+    // Animate the knife cutting the cake.
+    function cutCake() {
+      var knife = document.getElementById('knife');
+      knife.style.display = 'block';
+      knife.style.animation = 'slice 1s forwards';
+      setTimeout(function() {
+        knife.style.display = 'none';
+        knife.style.animation = '';
+        alert('Cake is cut! 🎂🍰 Enjoy!');
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
